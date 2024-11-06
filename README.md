@@ -45,11 +45,11 @@ Die API verwendet **JWT (JSON Web Tokens)** zur Authentifizierung. Um auf gesch√
 
 ## Endpunkte
 
-### Benutzer-API
+### Auth-API
 
 #### 1. **Benutzer registrieren (POST /signup)**
 
-- **URL:** `/todo-api/signup`
+- **URL:** `/todo-api/auth/signup`
 - **Methode:** POST
 - **Body:** 
   ```json
@@ -65,7 +65,7 @@ Die API verwendet **JWT (JSON Web Tokens)** zur Authentifizierung. Um auf gesch√
 
 #### 2. **Benutzer anmelden (POST /login)**
 
-- **URL:** `/todo-api/login`
+- **URL:** `/todo-api/auth/login`
 - **Methode:** POST
 - **Body:** 
   ```json
@@ -80,7 +80,7 @@ Die API verwendet **JWT (JSON Web Tokens)** zur Authentifizierung. Um auf gesch√
 
 #### 3. **Benutzer abmelden (POST /logout)**
 
-- **URL:** `/todo-api/logout`
+- **URL:** `/todo-api/auth/logout`
 - **Methode:** POST
 - **Header:** Authorization: `Bearer <JWT-Token>`
 - **Antwort:** 
@@ -88,7 +88,11 @@ Die API verwendet **JWT (JSON Web Tokens)** zur Authentifizierung. Um auf gesch√
   - Fehler: `401 Unauthorized` bei fehlerhaften Token
 
 ---
+### Benutzer API
 
+**Hinweis:** Diese API wird derzeit vervollst√§ndigt. In Zukunft wird sie Funktionen zur Benutzerverwaltung wie Profilbearbeitung, Passwort√§nderung und mehr bieten.
+
+---
 ### To-Do API
 
 #### 1. **Alle Aufgaben anzeigen (GET /todos/all)**
