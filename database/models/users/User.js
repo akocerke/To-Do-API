@@ -1,4 +1,3 @@
-// database/models/users/User.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../setup/database');
 
@@ -27,9 +26,15 @@ const User = sequelize.define('User', {
     defaultValue: DataTypes.NOW,
     allowNull: false,
   },
+  updated_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
+    onUpdate: DataTypes.NOW,
+  },
 }, {
-  tableName: 'users', // Setzt den Tabellennamen
-  timestamps: false,  // Keine automatische Erzeugung der Timestamps, weil du sie manuell definierst
+  tableName: 'users',
+  timestamps: false,
 });
 
 module.exports = User;
