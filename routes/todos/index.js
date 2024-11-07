@@ -64,6 +64,14 @@ TodosRouter.post('/create', async (req, res) => {
     return res.status(400).json({ message: 'Fälligkeitsdatum ist erforderlich' });
   }
 
+  // Überprüfen, ob das Fälligkeitsdatum in der Vergangenheit liegt
+  const now = new Date();
+  const dueDate = new Date(due_date);
+
+  if (dueDate < now) {
+    return res.status(400).json({ message: 'Fälligkeitsdatum darf nicht in der Vergangenheit liegen' });
+  }
+
   try {
     const userId = req.user.id; // Benutzer-ID aus dem Token (bereitgestellt durch die Middleware)
 
@@ -89,6 +97,7 @@ TodosRouter.post('/create', async (req, res) => {
   }
 });
 
+
 // PUT /update - To-Dos eines Benutzers aktualisieren
 TodosRouter.put('/update', async (req, res) => {
   const { todoId, title, description, status, is_important, due_date } = req.body; // To-Do-Daten aus dem Body
@@ -96,6 +105,16 @@ TodosRouter.put('/update', async (req, res) => {
   // Überprüfen, ob die ToDoId im Body enthalten ist
   if (!todoId) {
     return res.status(400).json({ message: 'To-Do ID fehlt' });
+  }
+
+  // Wenn ein `due_date` übergeben wird, überprüfen, ob es in der Vergangenheit liegt
+  if (due_date) {
+    const now = new Date();
+    const dueDate = new Date(due_date);
+
+    if (dueDate < now) {
+      return res.status(400).json({ message: 'Fälligkeitsdatum darf nicht in der Vergangenheit liegen' });
+    }
   }
 
   const userId = req.user.id; // Benutzer-ID aus dem Header-Token (authentifizierter Benutzer)
@@ -136,6 +155,7 @@ TodosRouter.put('/update', async (req, res) => {
     res.status(500).json({ message: 'Fehler beim Aktualisieren des To-Dos' });
   }
 });
+
 
 // PUT /status - To-Do-Status eines Benutzers aktualisieren
 TodosRouter.put('/status', async (req, res) => {
