@@ -10,11 +10,18 @@ const AuthRouter = Router();
 
 // Login-Route
 AuthRouter.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { identifier, password } = req.body;
 
   try {
-    // Überprüfe, ob der Benutzer existiert
-    const user = await User.findOne({ where: { email } });
+    // Überprüfen, ob das identifier-Feld eine E-Mail ist
+    const isEmail = identifier.includes('@');
+
+    // Suche nach dem Benutzer basierend auf E-Mail oder Benutzername
+    const user = await User.findOne({
+      where: isEmail ? { email: identifier } : { username: identifier }
+    });
+
+    // Wenn der Benutzer nicht gefunden wird, Fehlermeldung zurückgeben
     if (!user) {
       return res.status(401).json({ message: 'Benutzer nicht gefunden' });
     }
@@ -22,9 +29,7 @@ AuthRouter.post('/login', async (req, res) => {
     // Vergleiche das Passwort
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      return res
-        .status(401)
-        .json({ message: 'Ungültige Anmeldeinformationen' });
+      return res.status(401).json({ message: 'Ungültige Anmeldeinformationen' });
     }
 
     // JWT-Token generieren
