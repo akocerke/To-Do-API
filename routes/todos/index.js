@@ -6,7 +6,6 @@ const TodosRouter = Router();
 // GET /all - Gibt alle To-Dos eines Benutzers zurück
 TodosRouter.get('/all', async (req, res) => {
   try {
-    // Holen aller To-Dos für den Benutzer
     const todos = await ToDo.findAll({
       where: { user_id: req.user.id } // Annahme: 'user_id' ist der Spaltenname in der ToDo-Tabelle
     });
@@ -14,14 +13,12 @@ TodosRouter.get('/all', async (req, res) => {
     // Überprüfen, ob To-Dos vorhanden sind
     if (todos.length === 0) {
       // Benutzer hat keine To-Dos, aber es handelt sich um eine valide Antwort
-      logger.info(`GET /todos/all - UserID: ${req.user.id} - Keine To-Dos für diesen Benutzer gefunden`);
       return res.status(200).json({ message: 'Keine To-Dos für diesen Benutzer gefunden', todos: [] });
     }
 
     // Erfolgreiche Antwort mit den To-Dos
-    logger.info(`GET /todos/all - UserID: ${req.user.id} - To-Dos erfolgreich abgerufen`);
     res.status(200).json(todos);
-
+    logger.info(`GET /todos/all - UserID: ${req.user.id} - To-Dos erfolgreich abgerufen`);
   } catch (error) {
     // Fehlerbehandlung und Protokollierung
     logger.error(`GET /todos/all - UserID: ${req.user.id} - Fehler beim Abrufen der To-Dos: ${error.message}`);
@@ -29,7 +26,6 @@ TodosRouter.get('/all', async (req, res) => {
     res.status(500).json({ message: 'Fehler beim Abrufen der To-Dos' });
   }
 });
-
 
 
 // GET /important - Gibt alle wichtigen To-Dos eines Benutzers zurück
